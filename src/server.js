@@ -9,8 +9,12 @@ const APP_PORT = process.env.PORT || 3000
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
 
+
+// socket é a conexao real time com o meu usuario
 io.on('connection', socket => {
-    console.log('estou conectado ao socket')
+    socket.on('connectRoom', box => {
+        socket.join(box)
+    })
 })
 
 //conexao com o mongoDB remoto
@@ -27,7 +31,7 @@ app.use(express.json())
 
 
 // middleware para determinar que req.io é igual ao objeto do socket io
-app.use((req,res) => {
+app.use((req,res,next) => {
     req.io = io
 
     return next() // server para passar a request para frente
