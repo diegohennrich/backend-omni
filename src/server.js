@@ -5,6 +5,13 @@ const path = require('path')
 const app = express()
 const APP_PORT = process.env.PORT || 3000
 
+// server para que nosso servidor acesse tanto requisicoes http pelo express quanto protocolo ws do socket
+const server = require('http').Server(app)
+const io = require('socket.io')(server)
+
+io.on('connection', socket => {
+    console.log('estou conectado ao socket')
+})
 
 //conexao com o mongoDB remoto
 mongoose.connect('mongodb+srv://omni:omni@cluster0-ra8bi.mongodb.net/omni?retryWrites=true', { useNewUrlParser: true})
@@ -18,6 +25,14 @@ app.use('/files', express.static(path.resolve(__dirname,'..','public')))
 // acessar json
 app.use(express.json())
 
+
+// middleware para determinar que req.io é igual ao objeto do socket io
+app.use((req,res) => {
+    req.io = io
+
+    return next() // server para passar a request para frente
+})
+
  // usado para enviar arquivos na requisicao
 app.use(express.urlencoded({ extended : true }))
 
@@ -25,4 +40,4 @@ app.use(express.urlencoded({ extended : true }))
 // carrega as rotas da aplicacao em outro arquivo
 app.use(require('./routes'))
 
-app.listen(APP_PORT, () => console.log(`Rodando o servidor na porta ${APP_PORT}`))
+server.listen(APP_PORT, () => console.log(`Rodando o servidor na porta ${APP_PORT}`))
