@@ -25,9 +25,9 @@ const File = new mongoose.Schema({
 // função de callback não pode ser feito com arrow function, pois dessa forma ele não consegue acessar o "this" da instância
 File.virtual('url').get(function(){
 
-    const uri = process.env.URL || 'http://localhost:3000/files'
+    const uri = process.env.URL || 'http://localhost:3000'
     // encodeUriComponent concatena o path na string para formar o link da imagem
-    return `${uri}/${encodeURIComponent(this.path)}`
+    return `${uri}/files/${encodeURIComponent(this.path)}`
 })
 
 module.exports = mongoose.model('File', File)
