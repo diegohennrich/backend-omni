@@ -19,7 +19,7 @@ class File {
         await box.save();
 
         // pegando todos os usuarios(sockets) que estão conectados na minha sala box._id e dou um emit para eles
-        req.io.sockets.in(box._id).emite('file', arquivo)
+        req.io.sockets.in(box._id).emit('file', arquivo)
         
         res.json(arquivo)
     }
