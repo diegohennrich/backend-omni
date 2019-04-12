@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const path = require('path')
 const app = express()
-const APP_PORT = process.env.PORT || 3000
+// const APP_PORT = process.env.PORT || 3000
 
 // server para que nosso servidor acesse tanto requisicoes http pelo express quanto protocolo ws do socket
 const server = require('http').Server(app)
@@ -44,4 +44,4 @@ app.use(express.urlencoded({ extended : true }))
 // carrega as rotas da aplicacao em outro arquivo
 app.use(require('./routes'))
 
-server.listen(APP_PORT, () => console.log(`Rodando o servidor na porta ${APP_PORT}`))
+server.listen(3000, () => console.log(`Rodando o servidor na porta ${3000}`))
